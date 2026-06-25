@@ -12,6 +12,9 @@ Listings/
 *.lnp
 *.sct
 
+# 训练资料
+综合训练资料/
+
 # 系统垃圾文件
 .DS_Store
 __pycache__
