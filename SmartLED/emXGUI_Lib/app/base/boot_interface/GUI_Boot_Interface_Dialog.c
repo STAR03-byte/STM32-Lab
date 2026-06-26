@@ -282,8 +282,8 @@ void	GUI_Boot_Interface_Dialog(void *param)
 
 
      }
+#endif     
 		 else
-#endif
 		 {
 		         GUI_Thread_Create(GUI_Board_App_Desktop, /* 任务入口函数 */
                               "GUI_Board_App_Desktop",     /* 任务名字 */
