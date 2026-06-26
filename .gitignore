@@ -11,6 +11,15 @@ Listings/
 *.dep
 *.lnp
 *.sct
+*.lst
+*.iex
+*.htm
+*.build_log.htm
+
+# Keil 用户特定文件
+*.uvguix
+*.nebula
+*.dbgconf
 
 # 训练资料
 综合训练资料/
