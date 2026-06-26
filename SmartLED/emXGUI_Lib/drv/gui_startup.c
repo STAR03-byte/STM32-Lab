@@ -7,6 +7,7 @@ extern BOOL	GL_CursorInit(const SURFACE *pSurf,int x,int y);
 extern BOOL	GUI_Arch_Init(void);
 
 extern void GUI_DesktopStartup(void);
+extern HFONT GUI_Init_Extern_Font(void);
 static BOOL GUI_LowLevelInit(void);
     
 /***********************第1部分*************************/
@@ -101,6 +102,7 @@ void	GUI_Startup(void)
 #endif  
   
 /***********************第8部分*************************/
+  GUI_Init_Extern_Font();
   hFont = GUI_Default_FontInit(); //初始化默认的字体
 	if(hFont==NULL)
 	{
