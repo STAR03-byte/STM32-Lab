@@ -68,8 +68,6 @@ static void App_Load_Res(void )
   */
 static	LRESULT	win_proc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-  static  BITMAP png_bm;
-  static  PNG_DEC *png_dec; 
   PROGRESSBAR_CFG cfg;
   switch (msg)
   {  
@@ -83,16 +81,6 @@ static	LRESULT	win_proc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
       /* 本窗口垂直分为2份 */
 
       /* 根据图片数据创建PNG_DEC句柄 */
-      png_dec = PNG_Open((u8 *)bootlogo, bootlogo_size());
-      /* 把图片转换成bitmap */
-      PNG_GetBitmap(png_dec, &png_bm);
-      
-      rc0.x = (rc.w - png_bm.Width)/2;
-      rc0.y = rc.h/2 - png_bm.Height - 10;
-      rc0.w = rc.w;
-//      DrawBitmap(hdc, 250, 80, &png_bm, NULL); 
-      
-      OffsetRect(&rc0,0,png_bm.Height);
       rc0.x = 0;
       rc0.y = rc.h/2;
       rc0.h = 30;      
@@ -157,12 +145,7 @@ static	LRESULT	win_proc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
       GetClientRect(hwnd,&rc); //获得窗口的客户区矩形
 
       SetBrushColor(hdc, MapRGB(hdc, 0, 0, 0));
-      FillRect(hdc, &rc);    
-      
-      rc.x = (rc.w - png_bm.Width)/2;
-      rc.y = rc.h/2 - png_bm.Height - 10;;
-      /* 显示图片 */
-      DrawBitmap(hdc, rc.x, rc.y, &png_bm, NULL);  
+      FillRect(hdc, &rc);
       return TRUE;
 
     }
@@ -187,7 +170,6 @@ static	LRESULT	win_proc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     case WM_CLOSE: //窗口销毁时，会自动产生该消息，在这里做一些资源释放的操作.
     {
       /* 关闭PNG_DEC句柄 */
-      PNG_Close(png_dec);
       DestroyWindow(hwnd); 
       Boot_progbar = NULL;
       return TRUE; //调用PostQuitMessage，使用主窗口结束并退出消息循环.
