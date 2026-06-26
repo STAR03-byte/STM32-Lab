@@ -28,10 +28,14 @@ extern "C"{
 
 
 #include "./flash/bsp_spi_flash.h"
-#include "./led/bsp_led.h"
+#include "./led/bsp_led.h" 
 #include "./uart/bsp_debug_usart.h"
-#include "./key/bsp_key.h"
+#include "./key/bsp_key.h" 
 #include "ff.h"
+#include ".\clock\rtc\bsp_date.h"
+#include  ".\clock\rtc\bsp_rtc.h"
+#include "./wm8978/bsp_wm8978.h"  
+#include "./beep/bsp_beep.h"   
 
 #include "gui_drv_cfg.h"
 #include "gui_os_port.h"
@@ -45,8 +49,8 @@ extern "C"{
 
 /*=========================================================================================*/
 
-#define	BOARD_V30	//3.0ï¿½ï¿½
-//#define	BOARD_V31	//3.1ï¿½ï¿½
+#define	BOARD_V30	//3.0°æ
+//#define	BOARD_V31	//3.1°æ
 
 /*=========================================================================================*/
 

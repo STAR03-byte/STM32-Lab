@@ -30,8 +30,20 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_it.h"
 
-#include "FreeRTOS.h"
-#include "task.h"
+#include "FreeRTOS.h"					//FreeRTOS使用		  
+#include "task.h" 
+#include "usb_core.h"
+#include "usbd_core.h"
+#include "usb_conf.h"
+#include "usb_bsp.h"
+#include "bsp_adc.h"
+
+//extern uint32_t USBD_OTG_ISR_Handler (USB_OTG_CORE_HANDLE *pdev);
+//extern USB_OTG_CORE_HANDLE  USB_OTG_dev;
+#ifdef USB_OTG_HS_DEDICATED_EP1_ENABLED 
+extern uint32_t USBD_OTG_EP1IN_ISR_Handler (USB_OTG_CORE_HANDLE *pdev);
+extern uint32_t USBD_OTG_EP1OUT_ISR_Handler (USB_OTG_CORE_HANDLE *pdev);
+#endif
 /** @addtogroup STM32F429I_DISCOVERY_Examples
   * @{
   */
@@ -124,7 +136,7 @@ void DebugMon_Handler(void)
   * @retval None
   */
 extern void xPortSysTickHandler(void);
-//systick锟叫断凤拷锟斤拷锟斤拷
+//systick中断服务函数
 void SysTick_Handler(void)
 {	
     #if (INCLUDE_xTaskGetSchedulerState  == 1 )
@@ -148,6 +160,60 @@ volatile uint32_t CPU_RunTime = 0UL;
 
 /**
   * @}
+  */ 
+#ifdef USE_USB_OTG_HS  
+void OTG_HS_IRQHandler(void)
+{
+  USBD_OTG_ISR_Handler (&USB_OTG_dev);
+
+}
+#endif
+
+#ifdef USE_USB_OTG_FS  
+void OTG_FS_IRQHandler(void)
+{
+  //USBD_OTG_ISR_Handler (&USB_OTG_dev);
+}
+#endif
+#ifdef USB_OTG_HS_DEDICATED_EP1_ENABLED 
+/**
+  * @brief  This function handles EP1_IN Handler.
+  * @param  None
+  * @retval None
   */
+void OTG_HS_EP1_IN_IRQHandler(void)
+{
+  USBD_OTG_EP1IN_ISR_Handler (&USB_OTG_dev);
+}
+
+/**
+  * @brief  This function handles EP1_OUT Handler.
+  * @param  None
+  * @retval None
+  */
+void OTG_HS_EP1_OUT_IRQHandler(void)
+{
+  USBD_OTG_EP1OUT_ISR_Handler (&USB_OTG_dev);
+}
+#endif
+
+
+//extern __IO uint16_t ADC_ConvertedValue;
+
+// ADC 转换完成中断服务程序
+void ADC_IRQHandler(void)
+{
+	if(ADC_GetITStatus(RHEOSTAT_ADC,ADC_IT_EOC)==SET)
+	{
+  // 读取ADC的转换值
+		//ADC_ConvertedValue = ADC_GetConversionValue(RHEOSTAT_ADC);
+
+	}
+	ADC_ClearITPendingBit(RHEOSTAT_ADC,ADC_IT_EOC);
+
+}	
+/**
+  * @}
+  */ 
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
